@@ -17,6 +17,14 @@ function fixBranding() {
         }
     }
 
+    const tertiaryPostButton = document.querySelector('div[data-testid="tweetButtonInline"]');
+    if (tertiaryPostButton) {
+        const spanId = tertiaryPostButton.querySelector('span > span');
+        if (spanId && spanId.textContent.includes('Post')) {
+            spanId.textContent = 'Tweet';
+        }
+    }
+
     const homeLink = document.querySelector('a[aria-label="X"]');
     if (homeLink) {
         const svgElement = homeLink.querySelector('svg');
@@ -28,6 +36,12 @@ function fixBranding() {
             Larry.style.height = '24px';
             svgElement.replaceWith(Larry);
         }
+    }
+
+    const originalTitle = document.title;
+    const titleParts = originalTitle.split(' / ');
+    if (titleParts.length === 2) {
+        document.title = titleParts[0] + ' / Twitter';
     }
 }
 setInterval(fixBranding, 1000);
