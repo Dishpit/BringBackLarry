@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "BringBackLarry",
+    "version": "0.1.0",
+    "description": "My drunken attempt to restore Twitter to its former glory in the form of a Chrome extension.",
+    "permissions": ["activeTab"],
+    "icons": {
+        "48": "icon.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["*://*.twitter.com/*", "*://*.x.com/*"],
+            "js": ["content.js"]
+        }
+    ]
+}
