@@ -44,4 +44,4 @@ function fixBranding() {
         document.title = titleParts[0] + ' / Twitter';
     }
 }
-setInterval(fixBranding, 1000);
+setInterval(fixBranding, 100);
