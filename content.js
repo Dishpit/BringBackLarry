@@ -44,7 +44,10 @@ function fixTwitter() {
 
   const grok = document.querySelector('a[aria-label="Grok"]');
 
+  const premium = document.querySelector('a[aria-label="Premium"]');
+
   grok.style.display = "None";
+  premium.style.display = "None";
 
   const originalTitle = document.title;
   const titleParts = originalTitle.split(" / ");
