@@ -59,4 +59,4 @@ function fixTwitter() {
     window.location.replace("https://twitter.com")
   }
 }
-setInterval(fixTwitter, 100);
+setInterval(fixTwitter, 10);
