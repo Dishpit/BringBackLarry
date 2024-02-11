@@ -43,11 +43,12 @@ function fixTwitter() {
   }
 
   const grok = document.querySelector('a[aria-label="Grok"]');
-
   const premium = document.querySelector('a[aria-label="Premium"]');
+  const subToPrem = document.querySelector('aside[aria-label="Subscribe to Premium"]');
 
   grok.style.display = "None";
   premium.style.display = "None";
+  subToPrem.style.display = "None";
 
   const originalTitle = document.title;
   const titleParts = originalTitle.split(" / ");
@@ -59,4 +60,20 @@ function fixTwitter() {
     window.location.replace("https://twitter.com")
   }
 }
+
+function replaceX() {
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+  let node;
+  const xcorp = /X Corp\./gi;
+  const xlogo = /\u{1D54F}/gu;
+  while (node = walker.nextNode()) {
+    node.nodeValue = node.nodeValue.replace(xcorp, 'Twitter').replace(xlogo, 'Twitter');
+  }
+}
 setInterval(fixTwitter, 10);
+setInterval(replaceX, 100);
