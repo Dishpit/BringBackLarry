@@ -1,4 +1,25 @@
 function fixTwitter() {
+  const targetNode = document.querySelector('div[data-testid="cellInnerDiv"]');
+  const config = { attributes: true, childList: true, subtree: true };
+  const callback = function (mutationsList) {
+    for (let mutation of mutationsList) {
+      if (mutation.type === "childList") {
+        const moreRepliesButton = targetNode.querySelector(
+          "span.css-1qaijid.r-bcqeeo.r-qvutc0.r-poiln3"
+        );
+        if (
+          moreRepliesButton &&
+          moreRepliesButton.textContent.includes("Show more replies")
+        ) {
+          moreRepliesButton.textContent = "See other responses";
+        }
+      }
+    }
+  };
+  const observer = new MutationObserver(callback);
+  if (targetNode) {
+    observer.observe(targetNode, config);
+  }
   const primaryPostButton = document.querySelector('a[aria-label="Post"]');
   if (primaryPostButton) {
     const spans = primaryPostButton.querySelectorAll("span");
@@ -44,7 +65,9 @@ function fixTwitter() {
 
   const grok = document.querySelector('a[aria-label="Grok"]');
   const premium = document.querySelector('a[aria-label="Premium"]');
-  const subToPrem = document.querySelector('aside[aria-label="Subscribe to Premium"]');
+  const subToPrem = document.querySelector(
+    'aside[aria-label="Subscribe to Premium"]'
+  );
 
   grok.style.display = "None";
   premium.style.display = "None";
@@ -56,8 +79,11 @@ function fixTwitter() {
     document.title = titleParts[0] + " / Twitter";
   }
 
-  if (window.location.href.includes("twitter.com/i/grok") || window.location.href.includes("x.com/i/grok")) {
-    window.location.replace("https://twitter.com")
+  if (
+    window.location.href.includes("twitter.com/i/grok") ||
+    window.location.href.includes("x.com/i/grok")
+  ) {
+    window.location.replace("https://twitter.com");
   }
 }
 
@@ -71,8 +97,16 @@ function replaceX() {
   let node;
   const xcorp = /X Corp\./gi;
   const xlogo = /\u{1D54F}/gu;
-  while (node = walker.nextNode()) {
-    node.nodeValue = node.nodeValue.replace(xcorp, 'Twitter').replace(xlogo, 'Twitter');
+
+  const replies = /Show more replies/gi;
+  while ((node = walker.nextNode())) {
+    if (node.nodeValue.match(replies)) {
+      node.nodeValue = node.nodeValue.replace(replies, "See porn bots, gifs and racism");
+    } else {
+      node.nodeValue = node.nodeValue
+        .replace(xcorp, "Twitter")
+        .replace(xlogo, "Twitter");
+    }
   }
 }
 setInterval(fixTwitter, 10);
