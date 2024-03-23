@@ -109,5 +109,6 @@ function replaceX() {
     }
   }
 }
-setInterval(fixTwitter, 10);
-setInterval(replaceX, 100);
+
+setTimeout(fixTwitter, 1000);
+setTimeout(replaceX, 1000);
