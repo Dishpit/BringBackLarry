@@ -97,18 +97,38 @@ function replaceX() {
   let node;
   const xcorp = /X Corp\./gi;
   const xlogo = /\u{1D54F}/gu;
-
-  const replies = /Show more replies/gi;
   while ((node = walker.nextNode())) {
-    if (node.nodeValue.match(replies)) {
-      node.nodeValue = node.nodeValue.replace(replies, "See porn bots, gifs and racism");
-    } else {
-      node.nodeValue = node.nodeValue
-        .replace(xcorp, "Twitter")
-        .replace(xlogo, "Twitter");
-    }
+    node.nodeValue = node.nodeValue
+      .replace(xcorp, "Twitter")
+      .replace(xlogo, "Twitter");
   }
 }
 
-setTimeout(fixTwitter, 1000);
-setTimeout(replaceX, 1000);
+function replaceTextInNode(node) {
+  const searchText = "Show more replies";
+  const replacementText = "See porn bots, gifs, and racism";
+  if (node.nodeType === Node.TEXT_NODE && node.nodeValue.includes(searchText)) {
+    node.nodeValue = node.nodeValue.replace(
+      new RegExp(searchText, "g"),
+      replacementText
+    );
+  } else {
+    node.childNodes.forEach(replaceTextInNode);
+  }
+}
+
+const observerCallback = (mutationsList, observer) => {
+  for (const mutation of mutationsList) {
+    if (mutation.type === "childList") {
+      mutation.addedNodes.forEach((node) => {
+        replaceTextInNode(node);
+      });
+    }
+  }
+};
+
+const observer = new MutationObserver(observerCallback);
+observer.observe(document.body, { childList: true, subtree: true });
+
+setTimeout(fixTwitter, 3000);
+setTimeout(replaceX, 3000);
